@@ -1,0 +1,21 @@
+/* tutorial*/
+.map-title {
+  padding-top: 1%;
+  padding-bottom: 5%;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 58px;
+  color: #d9d9d9;
+}
+.map {
+  background: rgb(0, 0, 0, 0.75);
+  color: #d9d9d9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 5%;
+}
+
+.map-img {
+  width: 90%;
+}
