@@ -1,74 +1,35 @@
-/* nav bar */
-.nav-logo {
-  background: rgba(27, 27, 27, 0);
-  overflow: hidden;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1em;
-  font-family: 'Poppins', sans-serif;
-  text-transform: uppercase;
-  font-size: 28px;
+/* NavBar.css */
+nav {
+  background-color: #333; /* Dark background for the navbar */
+  color: #fff; /* White text color */
+  padding: 10px 20px; /* Padding around the navbar */
+  display: flex; /* Using flexbox for alignment */
+  align-items: center; /* Center items vertically */
+  justify-content: space-between; /* Distribute space between links */
 }
 
-.nav-bar {
-  background: rgba(27, 27, 27, 0);
-  overflow: hidden;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1em;
-  font-family: 'Poppins', sans-serif;
-  text-transform: uppercase;
-  font-size: 28px;
+nav a {
+  color: #fff; /* Ensuring all links are white */
+  text-decoration: none; /* Remove underline from links */
+  margin-right: 20px; /* Space between links */
+  font-weight: bold; /* Make font bold */
+  transition: color 0.3s; /* Smooth transition for hover effects */
 }
 
-nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
+nav a:hover {
+  color: #007bff; /* Change color on hover to blue */
 }
 
 nav button {
-  background-color: transparent;
-  border: none;
-  color: white;
-  text-decoration: none;
-  font-family: 'Poppins', sans-serif;
-  text-transform: uppercase;
-  font-size: 24px;
+  padding: 8px 16px; /* Padding inside the button */
+  background-color: #007bff; /* A blue background for the button */
+  color: #fff; /* White text inside the button */
+  border: none; /* No border */
+  cursor: pointer; /* Cursor pointer to indicate it's clickable */
+  border-radius: 5px; /* Rounded corners for the button */
+  transition: background-color 0.3s; /* Smooth transition for background color */
 }
 
 nav button:hover {
-  background-color: #ddd;
-  color: black;
-  transition: ease-in 200ms;
-}
-
-.options {
-  margin: 0 10px;
-}
-
-.separator {
-  margin: 0 10px;
-  border-left: 2px solid white;
-  height: 28px;
-  margin: 0 10px;
-}
-
-@media (max-width: 768px) {
-  nav {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  ul {
-    margin-top: 10px;
-  }
-
-  .separator {
-    display: none;
-  }
+  background-color: #0056b3; /* Darker blue when hovering over the button */
 }

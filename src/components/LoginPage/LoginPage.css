@@ -1,0 +1,90 @@
+/* LoginPage.css */
+.login-page {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-page h2 {
+  color: #333;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 16px;
+  color: #666;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.toggle-button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+.toggle-button:hover {
+  background-color: #0056b3;
+}
+
+.toggle-button:disabled {
+  background-color: #ccc;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.toggle-buttons {
+  display: flex;
+  justify-content: space-between; /* Distributes space evenly */
+  margin-bottom: 20px; /* Spacing from the form elements */
+}
+
+.input-Login {
+  width: 100%;
+}
+
+.toggle-button {
+  flex: 1; /* Each button takes equal space */
+  margin: 0 5px; /* Space between buttons */
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc; /* Adding a border for better visibility */
+}
+
+.toggle-button:hover {
+  background-color: #e0e0e0;
+}
+
+.toggle-button:disabled {
+  background-color: #007bff;
+  color: white;
+  cursor: default; /* No pointer cursor on disabled button */
+}

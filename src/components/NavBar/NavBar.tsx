@@ -1,63 +1,47 @@
-import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import logo from '../../assets/GetYourSeat.png';
+// NavBar.jsx
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import './NavBar.css';
 
-interface NavBarProps {
-  isLoggedIn: boolean;
-}
-
-const NavBar = ({ isLoggedIn }: NavBarProps) => {
+const NavBar = () => {
   const navigate = useNavigate();
-
-  const handleNavigation = (path: string) => {
-    navigate(path);
-  };
+  const userJSON = localStorage.getItem('user');
+  const user = userJSON ? JSON.parse(userJSON) : null;
 
   return (
-    <nav className="nav-bar">
-      <Link to="/home">
-        <img className="logo" src={logo} alt="Logo" />
-      </Link>
-      <ul>
-        <li>
-          <button className="options">Restauracje</button>
-        </li>
-        <li className="separator"></li>
-        <li>
-          <button className="options">Moje rezerwacje</button>
-        </li>
-        <li className="separator"></li>
-        <li>
-          <button className="options">Pomoc</button>
-        </li>
-        <li className="separator"></li>
-        <li>
-          <button className="options">Współpraca</button>
-        </li>
-        <li className="separator"></li>
-        <li>
-          {isLoggedIn ? (
-            <button
-              onClick={() => {
-                /* navigate to my account */
-              }}
-              className="options"
-            >
-              Moje konto
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                /* navigate to login */
-              }}
-              className="options"
-            >
-              Zaloguj się
-            </button>
+    <nav>
+      <Link to="/">Home</Link>
+      <Link to="/AllRestaurantPage">Restaurants</Link>
+      {user ? (
+        <>
+          {user.role === 'ADMIN' && (
+            <Link to="/dashboard/admin">Admin Dashboard</Link>
           )}
-        </li>
-      </ul>
+          {user.role === 'USER' && (
+            <Link to="/dashboard/user">User Dashboard</Link>
+          )}
+          {user.role === 'RESTAURANT' && (
+            <Link to="/dashboard/ManageRestaurant">Manage Restaurant</Link> // Link to the management page for restaurant owners
+          )}
+          <button
+            onClick={() => {
+              localStorage.removeItem('user');
+              window.location.reload(); // Simple way to force reload/redirect
+            }}
+          >
+            Logout
+          </button>
+        </>
+      ) : (
+        <button
+          onClick={() => {
+            navigate('/login');
+          }}
+        >
+          Login
+        </button>
+      )}
     </nav>
   );
 };

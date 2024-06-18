@@ -12,10 +12,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/*" element={<App />} />
-      </Routes>
+      <App />
     </BrowserRouter>
   </React.StrictMode>
 );

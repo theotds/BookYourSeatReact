@@ -1,0 +1,20 @@
+/* NotFoundPage.css */
+.not-found-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .not-found-container h1 {
+    font-size: 2rem;
+  }
+  
+  .not-found-container p {
+    font-size: 1.2rem;
+  }
+  
+  .not-found-link {
+    font-size: 18px;
+    color: blue;
+    text-decoration: underline;
+  }
+  
