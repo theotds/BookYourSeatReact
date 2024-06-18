@@ -41,9 +41,9 @@ function App() {
         }
       />
       <Route
-        path="/reserve/:restaurantId"
+        path="/reserve/:id"
         element={
-          <ProtectedRoute role="user">
+          <ProtectedRoute role="USER">
             <RestaurantReservationPage />
           </ProtectedRoute>
         }

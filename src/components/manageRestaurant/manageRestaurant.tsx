@@ -4,38 +4,36 @@ import './manageRestaurant.css'; // Ensure this path is correct
 
 import NavBar from '../NavBar/NavBar';
 
-interface RestaurantInfo {
+interface Restaurant {
+  id: number;
   name: string;
   description: string;
   address: string;
+  userId: number;
 }
 
 interface User {
-  userId: number;
+  id: number;
   username: string;
   role: string;
 }
 
 interface Reservation {
   id: number;
-  customerName: string;
-  date: string;
-  time: string;
+  restaurant: Restaurant;
+  user: User;
+  reservationDate: string;
+  reservationTime: string;
 }
 
 const ManageRestaurant = () => {
-  const [restaurantInfo, setRestaurantInfo] = useState<RestaurantInfo>({
-    name: '',
-    description: '',
-    address: '',
-  });
-
+  const [restaurantInfo, setRestaurantInfo] = useState<Restaurant | null>(null);
   const [reservations, setReservations] = useState<Reservation[]>([]);
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   useEffect(() => {
     const fetchRestaurantInfo = async () => {
       try {
-        const user = JSON.parse(localStorage.getItem('user') || '{}');
         if (!user.userId) {
           console.error('User ID not found in local storage.');
           return;
@@ -49,32 +47,50 @@ const ManageRestaurant = () => {
             },
           }
         );
+
         if (response.data) {
-          setRestaurantInfo({
-            name: response.data.name,
-            description: response.data.description,
-            address: response.data.address,
-          });
+          setRestaurantInfo(response.data);
+          fetchReservationsByRestaurantName(response.data.name);
         }
       } catch (error) {
         console.error('Error fetching restaurant info:', error);
       }
     };
 
+    const fetchReservationsByRestaurantName = async (name: string) => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/reservations/restaurant/${name}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
+        );
+
+        if (response.data) {
+          setReservations(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching reservations:', error);
+      }
+    };
+
     fetchRestaurantInfo();
-  }, []);
+  }, [user.userId]);
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target;
-    setRestaurantInfo((prev) => ({ ...prev, [name]: value }));
+    if (restaurantInfo) {
+      setRestaurantInfo({ ...restaurantInfo, [name]: value });
+    }
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
       if (!user.userId) {
         console.error('User ID not found in local storage.');
         return;
@@ -99,53 +115,80 @@ const ManageRestaurant = () => {
       console.error('Error updating restaurant info:', error);
     }
   };
+
+  const handleCancelReservation = async (reservationId: number) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8080/api/reservations/${reservationId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        alert('Reservation cancelled successfully.');
+        setReservations(reservations.filter((res) => res.id !== reservationId));
+      } else {
+        console.error('Failed to cancel reservation:', response.status);
+      }
+    } catch (error) {
+      console.error('Error cancelling reservation:', error);
+    }
+  };
+
   return (
     <>
       <NavBar />
       <div className="manage-restaurant">
         <h1>Manage Your Restaurant</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="name">Name:</label>
-            <input
-              id="name"
-              type="text"
-              name="name"
-              value={restaurantInfo.name}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="description">Description:</label>
-            <textarea
-              id="description"
-              name="description"
-              value={restaurantInfo.description}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="address">Address:</label>
-            <input
-              id="address"
-              type="text"
-              name="address"
-              value={restaurantInfo.address}
-              onChange={handleInputChange}
-            />
-          </div>
-          <button type="submit">Update Info</button>
-        </form>
+        {restaurantInfo && (
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="name">Name:</label>
+              <input
+                id="name"
+                type="text"
+                name="name"
+                value={restaurantInfo.name}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="description">Description:</label>
+              <textarea
+                id="description"
+                name="description"
+                value={restaurantInfo.description}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="address">Address:</label>
+              <input
+                id="address"
+                type="text"
+                name="address"
+                value={restaurantInfo.address}
+                onChange={handleInputChange}
+              />
+            </div>
+            <button type="submit">Update Info</button>
+          </form>
+        )}
         <h2>Reservations</h2>
         <ul>
           {reservations.map((reservation) => (
             <li key={reservation.id}>
               <div className="reservation-info">
-                {reservation.customerName} - {reservation.date} at{' '}
-                {reservation.time}
+                {reservation.user.username} - {reservation.reservationDate} at{' '}
+                {reservation.reservationTime}
               </div>
               <div className="reservation-actions">
-                <button>Cancel</button>
+                <button onClick={() => handleCancelReservation(reservation.id)}>
+                  Cancel
+                </button>
               </div>
             </li>
           ))}

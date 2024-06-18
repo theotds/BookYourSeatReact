@@ -40,6 +40,7 @@ const LoginPage = () => {
               username: credentials.username,
             })
           );
+          console.log(response.data.role);
           // Assuming the response contains the role and other user details
           if (response.data.role === 'ADMIN') {
             navigate('/dashboard/admin');

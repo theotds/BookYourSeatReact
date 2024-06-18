@@ -1,10 +1,7 @@
-// HomePage.jsx
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import NavBar from '../NavBar/NavBar';
 import axios from 'axios';
-
 import './HomePage.css';
 
 import product1 from '../../assets/product1.png';
@@ -57,9 +54,22 @@ const HomePage = () => {
     },
   ];
 
-  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    alert('Search functionality not implemented yet.');
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/restaurants/name/${searchInput}`
+      );
+      if (response.data) {
+        const restaurant = response.data;
+        navigate(`/reserve/${restaurant.id}`);
+      } else {
+        alert('Restaurant not found');
+      }
+    } catch (error) {
+      console.error('Failed to fetch restaurant', error);
+      alert('Failed to fetch restaurant. Please try again.');
+    }
   };
 
   const registerRestaurantPlan = async (plan: Plan) => {
@@ -69,7 +79,6 @@ const HomePage = () => {
       )
     ) {
       try {
-        // Assuming there's a REST API endpoint to change the role and register the plan
         const response = await axios.post(
           `http://localhost:8080/api/users/${user?.userId}/changeRole/RESTAURANT`
         );
@@ -84,14 +93,13 @@ const HomePage = () => {
 
             navigate('/dashboard/ManageRestaurant');
           } else {
-            // Handle the case where user data is not available
             console.error('User data is not available');
           }
         } else {
           throw new Error('Failed to update user role.');
         }
       } catch (error) {
-        alert('Failed to register plan. ');
+        alert('Failed to register plan.');
       }
     }
   };
